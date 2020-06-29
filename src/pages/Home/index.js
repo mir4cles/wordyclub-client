@@ -1,5 +1,7 @@
 import React from "react";
 
+import SearchBar from "../../components/SearchBar";
+
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -24,14 +26,7 @@ export default function Home() {
       >
         Wordy Club
       </Typography>
-      <Typography
-        variant="h5"
-        align="center"
-        color="textSecondary"
-        component="p"
-      >
-        Description here
-      </Typography>
+      <SearchBar />
     </Container>
   );
 }

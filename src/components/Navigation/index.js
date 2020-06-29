@@ -8,7 +8,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 import IconButton from "@material-ui/core/IconButton";
-
 import LooksIcon from "@material-ui/icons/Looks";
 
 import LoggedIn from "./LoggedIn";
