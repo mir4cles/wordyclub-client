@@ -1,6 +1,7 @@
 import React from "react";
 
 import SearchBar from "../../components/SearchBar";
+import WordCard from "../../components/WordCard";
 
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
@@ -27,6 +28,11 @@ export default function Home() {
         Wordy Club
       </Typography>
       <SearchBar />
+      <WordCard
+        title="test card"
+        definition="check yourself"
+        partOfSpeech="wreckage"
+      />
     </Container>
   );
 }
