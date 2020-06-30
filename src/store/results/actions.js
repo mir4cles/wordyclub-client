@@ -30,7 +30,7 @@ export const fetchResults = (searchInput) => {
       headers: {
         "content-type": "application/octet-stream",
         "x-rapidapi-host": "wordsapiv1.p.rapidapi.com",
-        "x-rapidapi-key": "secret",
+        "x-rapidapi-key": "240ec11282mshf488493cf0c66fcp1f7184jsnfd5fe4a2b82c",
         useQueryString: true,
       },
     })
