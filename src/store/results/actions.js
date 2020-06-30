@@ -22,8 +22,9 @@ export const fetchResults = (searchInput) => {
     // if (!id || !token) {
     //   return ({ id, token } = 0);
     // }
+
     dispatch(appLoading());
-    axios({
+    await axios({
       method: "GET",
       url: `${wordsApiUrl}/${searchInput}`,
       headers: {
@@ -42,5 +43,16 @@ export const fetchResults = (searchInput) => {
         console.log(error);
         dispatch(showMessageWithTimeout("warning", false, `${error}`));
       });
+
+    if (token !== null) {
+      await axios.post(`${process.env.REACT_APP_API_URL}/searchhistory`, {
+        searchWord: searchInput,
+        token,
+      });
+    } else {
+      await axios.post(`${process.env.REACT_APP_API_URL}/searchhistory`, {
+        searchWord: searchInput,
+      });
+    }
   };
 };
