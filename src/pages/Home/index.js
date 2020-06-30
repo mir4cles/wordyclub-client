@@ -1,6 +1,7 @@
 import React from "react";
 
 import SearchBar from "../../components/SearchBar";
+import SearchResults from "../../components/SearchResults";
 
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
@@ -27,6 +28,7 @@ export default function Home() {
         Wordy Club
       </Typography>
       <SearchBar />
+      <SearchResults />
     </Container>
   );
 }
