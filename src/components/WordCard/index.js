@@ -25,18 +25,19 @@ const useStyles = makeStyles({
 
 export default function WordCard(props) {
   const classes = useStyles();
+  let prop = props.props;
 
   return (
     <Card className={classes.root}>
       <CardContent>
         <Typography variant="h5" component="h2">
-          {props.word}
+          {prop.word}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-          {props.partOfSpeech}
+          {prop.partOfSpeech}
         </Typography>
         <Typography variant="body2" component="p">
-          {props.definition}
+          {prop.definition}
         </Typography>
       </CardContent>
       <CardActions>

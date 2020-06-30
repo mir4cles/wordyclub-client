@@ -19,9 +19,9 @@ const fetchResultsSuccess = (results) => ({
 export const fetchResults = (searchInput) => {
   return async (dispatch, getState) => {
     const { id, token } = selectUser(getState());
-    if (!id || !token) {
-      return ({ id, token } = 0);
-    }
+    // if (!id || !token) {
+    //   return ({ id, token } = 0);
+    // }
     dispatch(appLoading());
 
     axios({
