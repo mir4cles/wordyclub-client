@@ -15,8 +15,8 @@ export default function SearchResults() {
 
   return (
     <>
-      {results.map((result) => (
-        <WordCard props={result} />
+      {results.map((result, index) => (
+        <WordCard key={index} props={result} />
       ))}
     </>
   );

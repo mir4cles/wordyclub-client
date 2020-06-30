@@ -26,7 +26,6 @@ export default function SearchBar() {
 
   function submitForm(event) {
     event.preventDefault();
-    console.log("search input:", searchInput);
     dispatch(fetchResults(searchInput));
   }
 
