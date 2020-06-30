@@ -1,7 +1,12 @@
 import React, { useState } from "react";
+
+import { useDispatch } from "react-redux";
+
 import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+
+import { fetchResults } from "../../store/results/actions";
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -15,12 +20,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchBar() {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const [searchInput, setSearchInput] = useState("");
 
   function submitForm(event) {
     event.preventDefault();
     console.log("search input:", searchInput);
+    dispatch(fetchResults(searchInput));
   }
 
   return (
