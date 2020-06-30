@@ -1,4 +1,4 @@
-// import { apiUrl } from "../../config/constants";
+import { wordsApiUrl, wordsApiKey } from "../../config/constants";
 import axios from "axios";
 
 import {
@@ -23,14 +23,13 @@ export const fetchResults = (searchInput) => {
     //   return ({ id, token } = 0);
     // }
     dispatch(appLoading());
-
     axios({
       method: "GET",
-      url: `https://wordsapiv1.p.rapidapi.com/words/${searchInput}`,
+      url: `${wordsApiUrl}/${searchInput}`,
       headers: {
         "content-type": "application/octet-stream",
         "x-rapidapi-host": "wordsapiv1.p.rapidapi.com",
-        "x-rapidapi-key": "240ec11282mshf488493cf0c66fcp1f7184jsnfd5fe4a2b82c",
+        "x-rapidapi-key": wordsApiKey,
         useQueryString: true,
       },
     })
