@@ -10,15 +10,23 @@ import {
 import { selectUser } from "../user/selectors";
 
 export const FETCH_RESULTS_SUCCESS = "FETCH_RESULTS_SUCCESS";
+export const SET_KEYWORD = "SET_KEYWORD";
 
-const fetchResultsSuccess = (results) => ({
+const fetchResultsSuccess = (results, keyword) => ({
   type: FETCH_RESULTS_SUCCESS,
-  payload: results,
+  results,
+  keyword,
+});
+
+const setKeyword = (keyword) => ({
+  type: SET_KEYWORD,
+  payload: keyword,
 });
 
 export const fetchResults = (searchInput) => {
   return async (dispatch, getState) => {
     const { id, token } = selectUser(getState());
+    console.log("id", id, "toke", token);
     // if (!id || !token) {
     //   return ({ id, token } = 0);
     // }
@@ -36,7 +44,8 @@ export const fetchResults = (searchInput) => {
     })
       .then((response) => {
         console.log(response.data);
-        dispatch(fetchResultsSuccess(response.data.results));
+        // dispatch(setKeyword(searchInput));
+        dispatch(fetchResultsSuccess(response.data.results, searchInput));
         dispatch(appDoneLoading());
       })
       .catch((error) => {

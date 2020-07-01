@@ -2,12 +2,14 @@ import {
   APP_LOADING,
   APP_DONE_LOADING,
   SET_MESSAGE,
-  CLEAR_MESSAGE
+  CLEAR_MESSAGE,
 } from "./actions";
+import { SET_KEYWORD } from "../results/actions";
 
 const initialState = {
   loading: false,
-  message: null
+  message: null,
+  keyword: null,
 };
 
 export default (state = initialState, action) => {
@@ -23,6 +25,9 @@ export default (state = initialState, action) => {
 
     case CLEAR_MESSAGE:
       return { ...state, message: null };
+
+    case SET_KEYWORD:
+      return { ...state, keyword: action.payload };
 
     default:
       return state;
