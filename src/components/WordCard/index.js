@@ -11,6 +11,8 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import { useDispatch } from "react-redux";
+import { updateFavWord } from "../../store/results/actions";
 
 const useStyles = makeStyles({
   root: {
@@ -34,10 +36,11 @@ export default function WordCard(props) {
   const [favoriteWord, setFavoriteWord] = useState(true);
   let results = props.results;
   console.log("props.results:", results);
+  const dispatch = useDispatch();
 
   function toggleFavorite() {
     setFavoriteWord(!favoriteWord);
-    console.log("favorite is set to:", favoriteWord);
+    dispatch(updateFavWord(props.results.keyword, favoriteWord));
   }
 
   return (
@@ -49,7 +52,7 @@ export default function WordCard(props) {
         <List dense={false}>
           {results.results.map((result, index) => {
             return (
-              <ListItem>
+              <ListItem key={index}>
                 <ListItemText
                   primary={`${index + 1}. ${result.definition}`}
                   secondary={result.partOfSpeech}

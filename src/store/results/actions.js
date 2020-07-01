@@ -65,3 +65,53 @@ export const fetchResults = (searchInput) => {
     }
   };
 };
+
+export const updateFavWord = (favouriteWord, status) => {
+  return async (dispatch, getState) => {
+    try {
+      const { id, token } = selectUser(getState());
+
+      dispatch(appLoading());
+
+      if (status) {
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_URL}/favouritewords/`,
+          { favouriteWord },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        dispatch(
+          showMessageWithTimeout("success", false, "Saved to favourites", 4000)
+        );
+      } else {
+        const response = await axios.delete(
+          `${process.env.REACT_APP_API_URL}/favouritewords/`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            data: {
+              favouriteWord,
+            },
+          }
+        );
+        dispatch(
+          showMessageWithTimeout(
+            "success",
+            false,
+            "Removed from favourites",
+            4000
+          )
+        );
+      }
+
+      dispatch(appDoneLoading());
+    } catch (error) {
+      console.log(error);
+      dispatch(showMessageWithTimeout("warning", false, `${error}`));
+    }
+  };
+};
