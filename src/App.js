@@ -26,7 +26,7 @@ function App() {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
-        <Route path="/userprofile/:id" component={UserProfile} />
+        <Route path="/profile/:userId" component={UserProfile} />
         <Route path="/signup" component={SignUp} />
         <Route path="/" component={NotFound} />
         <Route path="/404" component={NotFound} />

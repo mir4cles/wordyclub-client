@@ -62,7 +62,7 @@ export default function Navigation() {
               ref={ref}
               className={classes.link}
               component={RouterLink}
-              to={`/userprofile/${user.id}`}
+              to={`/profile/${user.id}`}
             >
               {user.name}
             </Link>
