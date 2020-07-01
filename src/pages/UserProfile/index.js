@@ -50,6 +50,21 @@ export default function UserProfile() {
     dispatch(fetchUserProfile(userId));
   }, [dispatch, userId]);
 
+  if (!userProfile.public) {
+    return (
+      <Container maxWidth="sm" component="main" className={classes.heroContent}>
+        <Typography
+          variant="h5"
+          align="center"
+          color="textSecondary"
+          component="p"
+        >
+          {userProfile.name}'s profile is set to private.
+        </Typography>
+      </Container>
+    );
+  }
+
   return (
     <>
       <Container maxWidth="sm" component="main" className={classes.heroContent}>
@@ -106,47 +121,67 @@ export default function UserProfile() {
                 className={classes.cardHeader}
               />
               <CardContent>
-                <TableContainer>
-                  <Table size="small" aria-label="a dense table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Keyword</TableCell>
-                        <TableCell align="right">Date</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      <TableRow key="1">
-                        <TableCell component="th" scope="row">
-                          row name
-                        </TableCell>
-                        <TableCell align="right">1</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+                {userProfile.searchHistories.length ? (
+                  <TableContainer>
+                    <Table size="small" aria-label="a dense table">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Keyword</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {userProfile.searchHistories.map(
+                          (searchHistory, index) => {
+                            return (
+                              <TableRow key={index}>
+                                <TableCell component="th" scope="row">
+                                  {searchHistory.searchWord}
+                                </TableCell>
+                              </TableRow>
+                            );
+                          }
+                        )}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                ) : null}
               </CardContent>
-              <CardActions>
-                <Button fullWidth variant="contained" color="primary">
-                  Button text here
-                </Button>
-              </CardActions>
             </Card>
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
             <Card>
               <CardHeader
                 title="Favorite words"
-                subheader="subheader"
                 titleTypographyProps={{ align: "center" }}
                 subheaderTypographyProps={{ align: "center" }}
                 className={classes.cardHeader}
               />
-              <CardContent>Card Content here</CardContent>
-              <CardActions>
-                <Button fullWidth variant="contained" color="primary">
-                  Button text here
-                </Button>
-              </CardActions>
+              <CardContent>
+                {userProfile.favouriteWords.length ? (
+                  <TableContainer>
+                    <Table size="small" aria-label="a dense table">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Keyword</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {userProfile.favouriteWords.map(
+                          (favouriteWord, index) => {
+                            return (
+                              <TableRow key={index}>
+                                <TableCell component="th" scope="row">
+                                  {favouriteWord.favouriteWord}
+                                </TableCell>
+                              </TableRow>
+                            );
+                          }
+                        )}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                ) : null}
+              </CardContent>
             </Card>
           </Grid>
         </Grid>

@@ -1,6 +1,9 @@
 import { USER_PROFILE_FETCHED } from "./actions";
 
-const initialState = [];
+const initialState = {
+  searchHistories: [],
+  favouriteWords: [],
+};
 
 export default (state = initialState, action) => {
   switch (action.type) {
