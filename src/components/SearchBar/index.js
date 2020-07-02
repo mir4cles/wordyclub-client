@@ -37,6 +37,7 @@ export default function SearchBar() {
     <div style={{ width: 300 }}>
       <form className={classes.form} noValidate>
         <TextField
+          fullWidth
           id="search-bar"
           variant="outlined"
           label="Search"
