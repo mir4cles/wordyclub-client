@@ -3,11 +3,16 @@ import React from "react";
 import Wordcloud from "../../components/Wordcloud";
 import SearchBar from "../../components/SearchBar";
 import SearchResults from "../../components/SearchResults";
+import { resetResult } from "../../store/results/actions";
 
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+
 import Grid from "@material-ui/core/Grid";
+
+import { useDispatch } from "react-redux";
+
 
 const useStyles = makeStyles((theme) => ({
   heroContent: {
@@ -17,6 +22,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  dispatch(resetResult());
 
   return (
     <>

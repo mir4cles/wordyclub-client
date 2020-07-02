@@ -8,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { fetchResults } from "../../store/results/actions";
 import SayButton from "react-say/lib/SayButton";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -24,10 +25,12 @@ export default function SearchBar() {
   const dispatch = useDispatch();
 
   const [searchInput, setSearchInput] = useState("");
+  const history = useHistory();
 
   function submitForm(event) {
     event.preventDefault();
     dispatch(fetchResults(searchInput));
+    history.push(`/search/${searchInput}`);
   }
 
   return (

@@ -20,6 +20,11 @@ const fetchResultsSuccess = (results, keyword) => ({
   keyword,
 });
 
+const setKeyword = (keyword) => ({
+  type: SET_KEYWORD,
+  payload: keyword,
+});
+
 const updateFavInProfile = (favouriteWord) => ({
   type: DELETE_FAVWORD_PROFILE,
   payload: favouriteWord,
@@ -29,7 +34,7 @@ const updateProfileHistory = () => ({
   type: UPDATE_PROFILE_HISTORY,
 });
 
-const resetResult = () => ({
+export const resetResult = () => ({
   type: "RESET",
 });
 
