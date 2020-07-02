@@ -11,6 +11,7 @@ import { selectUser } from "../user/selectors";
 
 export const FETCH_RESULTS_SUCCESS = "FETCH_RESULTS_SUCCESS";
 export const SET_KEYWORD = "SET_KEYWORD";
+export const DELETE_FAVWORD_PROFILE = "DELETE_FAVWORD_PROFILE";
 
 const fetchResultsSuccess = (results, keyword) => ({
   type: FETCH_RESULTS_SUCCESS,
@@ -21,6 +22,11 @@ const fetchResultsSuccess = (results, keyword) => ({
 const setKeyword = (keyword) => ({
   type: SET_KEYWORD,
   payload: keyword,
+});
+
+const updateFavInProfile = (favouriteWord) => ({
+  type: DELETE_FAVWORD_PROFILE,
+  payload: favouriteWord,
 });
 
 export const fetchResults = (searchInput) => {
@@ -84,7 +90,12 @@ export const updateFavWord = (favouriteWord, status) => {
           }
         );
         dispatch(
-          showMessageWithTimeout("success", false, "Saved to favourites", 4000)
+          showMessageWithTimeout(
+            "success",
+            false,
+            `Saved "${favouriteWord}" to favourites`,
+            4000
+          )
         );
       } else {
         const response = await axios.delete(
@@ -98,16 +109,16 @@ export const updateFavWord = (favouriteWord, status) => {
             },
           }
         );
+        dispatch(updateFavInProfile(favouriteWord));
         dispatch(
           showMessageWithTimeout(
             "success",
             false,
-            "Removed from favourites",
+            `Removed "${favouriteWord}" from favourites`,
             4000
           )
         );
       }
-
       dispatch(appDoneLoading());
     } catch (error) {
       console.log(error);

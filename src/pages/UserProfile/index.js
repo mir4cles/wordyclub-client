@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -18,15 +17,20 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 
 import PersonIcon from "@material-ui/icons/Person";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 import { selectUserProfile } from "../../store/userProfile/selectors";
 import { fetchUserProfile } from "../../store/userProfile/actions";
+
+import { updateFavWord } from "../../store/results/actions";
+import { selectUser } from "../../store/user/selectors";
 
 const useStyles = makeStyles((theme) => ({
   heroContent: {
@@ -44,53 +48,52 @@ export default function UserProfile() {
   const classes = useStyles();
   const { userId } = useParams();
   const userProfile = useSelector(selectUserProfile);
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchUserProfile(userId));
   }, [dispatch, userId]);
 
-  if (!userProfile.public) {
+  function removeFavorite(event, favouriteWord) {
+    event.preventDefault();
+    dispatch(updateFavWord(favouriteWord, false));
+  }
+
+  if (!userProfile.public && userProfile.id !== user.id) {
     return (
-      <Container maxWidth="sm" component="main" className={classes.heroContent}>
-        <Typography
-          variant="h5"
-          align="center"
-          color="textSecondary"
-          component="p"
-        >
-          {userProfile.name}'s profile is set to private.
-        </Typography>
+      <Container maxWidth="md" component="main" className={classes.heroContent}>
+        <Grid container spacing={5} alignItems="flex-start" justify="center">
+          <Grid item xs={12} sm={6} md={4}>
+            <Card>
+              <CardHeader
+                title="User information"
+                titleTypographyProps={{ align: "center" }}
+                subheaderTypographyProps={{ align: "center" }}
+                className={classes.cardHeader}
+              />
+              <CardContent>This profile is set to private.</CardContent>
+            </Card>
+          </Grid>
+        </Grid>
       </Container>
     );
   }
 
   return (
     <>
-      <Container maxWidth="sm" component="main" className={classes.heroContent}>
-        <Typography
-          variant="h5"
-          align="center"
-          color="textSecondary"
-          component="p"
-        >
-          {userProfile.name}'s profile page
-        </Typography>
-      </Container>
-
-      <Container maxWidth="md" component="main">
-        <Grid container spacing={5} alignItems="flex-end">
-          <Grid item xs={12} sm={6} md={4}>
+      <Container maxWidth="md" component="main" className={classes.heroContent}>
+        <Grid container spacing={5} alignItems="flex-start" justify="center">
+          <Grid item xs={11} sm={5} md={4}>
             <Card>
               <CardHeader
                 title="User information"
-                subheader="this should be private"
                 titleTypographyProps={{ align: "center" }}
                 subheaderTypographyProps={{ align: "center" }}
                 className={classes.cardHeader}
               />
               <CardContent>
-                <List dense>
+                <List>
                   <ListItem>
                     <ListItemIcon>
                       <PersonIcon />
@@ -112,7 +115,45 @@ export default function UserProfile() {
               </CardActions>
             </Card>
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={11} sm={5} md={4}>
+            <Card>
+              <CardHeader
+                title="Favourite words"
+                titleTypographyProps={{ align: "center" }}
+                subheaderTypographyProps={{ align: "center" }}
+                className={classes.cardHeader}
+              />
+              <CardContent>
+                {userProfile.favouriteWords.length ? (
+                  <List dense>
+                    {userProfile.favouriteWords.map((favouriteWord, index) => {
+                      return (
+                        <ListItem key={index}>
+                          <ListItemText primary={favouriteWord.favouriteWord} />
+                          <ListItemSecondaryAction>
+                            <IconButton
+                              edge="end"
+                              aria-label="delete"
+                              fontSize="small"
+                              onClick={(event) =>
+                                removeFavorite(
+                                  event,
+                                  favouriteWord.favouriteWord
+                                )
+                              }
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </ListItemSecondaryAction>
+                        </ListItem>
+                      );
+                    })}
+                  </List>
+                ) : null}
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={11} sm={5} md={4}>
             <Card>
               <CardHeader
                 title="Search history"
@@ -124,11 +165,6 @@ export default function UserProfile() {
                 {userProfile.searchHistories.length ? (
                   <TableContainer>
                     <Table size="small" aria-label="a dense table">
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>Keyword</TableCell>
-                        </TableRow>
-                      </TableHead>
                       <TableBody>
                         {userProfile.searchHistories.map(
                           (searchHistory, index) => {
@@ -136,42 +172,6 @@ export default function UserProfile() {
                               <TableRow key={index}>
                                 <TableCell component="th" scope="row">
                                   {searchHistory.searchWord}
-                                </TableCell>
-                              </TableRow>
-                            );
-                          }
-                        )}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                ) : null}
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card>
-              <CardHeader
-                title="Favorite words"
-                titleTypographyProps={{ align: "center" }}
-                subheaderTypographyProps={{ align: "center" }}
-                className={classes.cardHeader}
-              />
-              <CardContent>
-                {userProfile.favouriteWords.length ? (
-                  <TableContainer>
-                    <Table size="small" aria-label="a dense table">
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>Keyword</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {userProfile.favouriteWords.map(
-                          (favouriteWord, index) => {
-                            return (
-                              <TableRow key={index}>
-                                <TableCell component="th" scope="row">
-                                  {favouriteWord.favouriteWord}
                                 </TableCell>
                               </TableRow>
                             );
