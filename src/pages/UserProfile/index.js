@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -20,6 +20,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableRow from "@material-ui/core/TableRow";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
+import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 
 import PersonIcon from "@material-ui/icons/Person";
@@ -27,8 +28,10 @@ import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 import { selectUserProfile } from "../../store/userProfile/selectors";
-import { fetchUserProfile } from "../../store/userProfile/actions";
-
+import {
+  fetchUserProfile,
+  updateProfile,
+} from "../../store/userProfile/actions";
 import { updateFavWord, clearUserHistory } from "../../store/results/actions";
 import { selectUser } from "../../store/user/selectors";
 
@@ -46,26 +49,26 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserProfile() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   const { userId } = useParams();
   const userProfile = useSelector(selectUserProfile);
   const user = useSelector(selectUser);
   const currentUserIsOwner = userProfile.id == user.id;
-  const dispatch = useDispatch();
+
+  const [editMode, setEditMode] = useState(false);
+  const [username, setUsername] = useState(userProfile.name);
+  const [email, setEmail] = useState(userProfile.email);
 
   useEffect(() => {
     dispatch(fetchUserProfile(userId));
   }, [dispatch, userId]);
 
-  function removeFavorite(event, favouriteWord) {
+  function submitChanges(event) {
     event.preventDefault();
-    dispatch(updateFavWord(favouriteWord, false));
+    dispatch(updateProfile(userId, username, email));
+    setEditMode(false);
   }
-
-  // function clearUserHistory(event) {
-  //   event.preventDefault();
-  //   console.log("clearuserhistory pressed for userId:", userId);
-  //   dispatch(clearUserHistory(userId));
-  // }
 
   if (!userProfile.public && !currentUserIsOwner) {
     return (
@@ -105,20 +108,58 @@ export default function UserProfile() {
                     <ListItemIcon>
                       <PersonIcon />
                     </ListItemIcon>
-                    <ListItemText primary={userProfile.name} />
+                    {!editMode ? (
+                      <ListItemText primary={userProfile.name} />
+                    ) : (
+                      <TextField
+                        id="username"
+                        variant="outlined"
+                        label="username"
+                        value={username}
+                        defaultValue={userProfile.name}
+                        onChange={(event) => setUsername(event.target.value)}
+                      />
+                    )}
                   </ListItem>
                   <ListItem>
                     <ListItemIcon>
                       <AlternateEmailIcon />
                     </ListItemIcon>
-                    <ListItemText primary={userProfile.email} />
+                    {!editMode ? (
+                      <ListItemText primary={userProfile.email} />
+                    ) : (
+                      <TextField
+                        id="email"
+                        variant="outlined"
+                        label="user-email"
+                        value={email}
+                        defaultValue={userProfile.email}
+                        onChange={(event) => setEmail(event.target.value)}
+                      />
+                    )}
                   </ListItem>
                 </List>
               </CardContent>
               <CardActions>
-                <Button fullWidth variant="contained" color="primary">
-                  Edit profile
-                </Button>
+                {!editMode ? (
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setEditMode(!editMode)}
+                  >
+                    Edit profile
+                  </Button>
+                ) : (
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    onClick={submitChanges}
+                  >
+                    Save profile
+                  </Button>
+                )}
               </CardActions>
             </Card>
           </Grid>
@@ -142,11 +183,8 @@ export default function UserProfile() {
                               edge="end"
                               aria-label="delete"
                               fontSize="small"
-                              onClick={(event) =>
-                                removeFavorite(
-                                  event,
-                                  favouriteWord.favouriteWord
-                                )
+                              onClick={() =>
+                                dispatch(updateFavWord(favouriteWord, false))
                               }
                             >
                               <DeleteIcon />
