@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import { useDispatch } from "react-redux";
 import { updateFavWord } from "../../store/results/actions";
+import SayButton from "react-say/lib/SayButton";
 
 const useStyles = makeStyles({
   root: {
@@ -57,6 +58,12 @@ export default function WordCard(props) {
                   primary={`${index + 1}. ${result.definition}`}
                   secondary={result.partOfSpeech}
                 />
+                <SayButton
+                  onClick={(event) => console.log(event)}
+                  speak={result.definition}
+                >
+                  Listen to Search Word
+                </SayButton>
               </ListItem>
             );
           })}
