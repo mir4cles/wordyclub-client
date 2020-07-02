@@ -10,10 +10,9 @@ const fetchWordsSuccess = (searchHistory) => ({
 
 export const fetchWords = () => {
   return async (dispatch, getState) => {
-    const wordsCount = getState().searchHistory.length;
     dispatch(appLoading());
     const response = await axios.get(
-      `${apiUrl}/searchhistory?limit=${DEFAULT_PAGINATION_LIMIT}&offset=${wordsCount}`
+      `${apiUrl}/searchhistory?limit=${DEFAULT_PAGINATION_LIMIT}`
     );
     dispatch(fetchWordsSuccess(response.data));
     dispatch(appDoneLoading());

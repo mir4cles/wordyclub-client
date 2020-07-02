@@ -20,11 +20,6 @@ const fetchResultsSuccess = (results, keyword) => ({
   keyword,
 });
 
-const setKeyword = (keyword) => ({
-  type: SET_KEYWORD,
-  payload: keyword,
-});
-
 const updateFavInProfile = (favouriteWord) => ({
   type: DELETE_FAVWORD_PROFILE,
   payload: favouriteWord,
@@ -90,12 +85,12 @@ export const fetchResults = (searchInput) => {
 export const updateFavWord = (favouriteWord, status) => {
   return async (dispatch, getState) => {
     try {
-      const { id, token } = selectUser(getState());
+      const { token } = selectUser(getState());
 
       dispatch(appLoading());
 
       if (status) {
-        const response = await axios.post(
+        await axios.post(
           `${process.env.REACT_APP_API_URL}/favouritewords/`,
           { favouriteWord },
           {
@@ -113,17 +108,14 @@ export const updateFavWord = (favouriteWord, status) => {
           )
         );
       } else {
-        const response = await axios.delete(
-          `${process.env.REACT_APP_API_URL}/favouritewords/`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            data: {
-              favouriteWord,
-            },
-          }
-        );
+        await axios.delete(`${process.env.REACT_APP_API_URL}/favouritewords/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          data: {
+            favouriteWord,
+          },
+        });
         dispatch(updateFavInProfile(favouriteWord));
         dispatch(
           showMessageWithTimeout(
@@ -144,7 +136,7 @@ export const updateFavWord = (favouriteWord, status) => {
 
 export const clearUserHistory = (userId) => {
   return async (dispatch, getState) => {
-    const { id, token } = selectUser(getState());
+    const { token } = selectUser(getState());
     dispatch(appLoading());
     try {
       await axios.delete(

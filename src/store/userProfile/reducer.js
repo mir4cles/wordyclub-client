@@ -1,4 +1,4 @@
-import { USER_PROFILE_FETCHED, USER_PROFILE_UPDATED } from "./actions";
+import { USER_PROFILE_FETCHED } from "./actions";
 import {
   DELETE_FAVWORD_PROFILE,
   UPDATE_PROFILE_HISTORY,

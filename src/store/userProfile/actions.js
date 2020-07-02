@@ -9,16 +9,10 @@ import {
 import { selectUser } from "../user/selectors";
 
 export const USER_PROFILE_FETCHED = "USER_PROFILE_FETCHED";
-export const USER_PROFILE_UPDATED = "USER_PROFILE_UPDATED";
 
 const userProfileFetched = (userProfile) => ({
   type: USER_PROFILE_FETCHED,
   payload: userProfile,
-});
-
-const updateUserProfileSuccess = (updatedProfile) => ({
-  type: USER_PROFILE_UPDATED,
-  payload: updatedProfile,
 });
 
 export const fetchUserProfile = (id) => {
