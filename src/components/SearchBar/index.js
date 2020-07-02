@@ -7,6 +7,7 @@ import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { fetchResults } from "../../store/results/actions";
+import SayButton from "react-say/lib/SayButton";
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -49,6 +50,9 @@ export default function SearchBar() {
         >
           Go
         </Button>
+        <SayButton onClick={(event) => console.log(event)} speak={searchInput}>
+          Listen to Search Word
+        </SayButton>
       </form>
     </div>
   );

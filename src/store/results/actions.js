@@ -25,6 +25,7 @@ const setKeyword = (keyword) => ({
   payload: keyword,
 });
 
+
 const updateFavInProfile = (favouriteWord) => ({
   type: DELETE_FAVWORD_PROFILE,
   payload: favouriteWord,
@@ -32,6 +33,9 @@ const updateFavInProfile = (favouriteWord) => ({
 
 const updateProfileHistory = () => ({
   type: UPDATE_PROFILE_HISTORY,
+
+const resetResult = () => ({
+  type: "RESET",
 });
 
 export const fetchResults = (searchInput) => {
@@ -43,6 +47,7 @@ export const fetchResults = (searchInput) => {
     // }
 
     dispatch(appLoading());
+    dispatch(resetResult());
     await axios({
       method: "GET",
       url: `${wordsApiUrl}/${searchInput}`,
@@ -54,10 +59,15 @@ export const fetchResults = (searchInput) => {
       },
     })
       .then((response) => {
-        console.log(response.data);
+        console.log("Response", response.data);
         // dispatch(setKeyword(searchInput));
-        dispatch(fetchResultsSuccess(response.data.results, searchInput));
-        dispatch(appDoneLoading());
+        if (response.data.results) {
+          dispatch(fetchResultsSuccess(response.data.results, searchInput));
+          dispatch(appDoneLoading());
+        } else {
+          dispatch(showMessageWithTimeout("warning", false, "Word Not Found"));
+          dispatch(appDoneLoading());
+        }
       })
       .catch((error) => {
         console.log(error);
