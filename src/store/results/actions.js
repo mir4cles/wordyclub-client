@@ -23,6 +23,10 @@ const setKeyword = (keyword) => ({
   payload: keyword,
 });
 
+const resetResult = () => ({
+  type: "RESET",
+});
+
 export const fetchResults = (searchInput) => {
   return async (dispatch, getState) => {
     const { id, token } = selectUser(getState());
@@ -32,6 +36,7 @@ export const fetchResults = (searchInput) => {
     // }
 
     dispatch(appLoading());
+    dispatch(resetResult());
     await axios({
       method: "GET",
       url: `${wordsApiUrl}/${searchInput}`,
