@@ -140,27 +140,29 @@ export default function UserProfile() {
                   </ListItem>
                 </List>
               </CardContent>
-              <CardActions>
-                {!editMode ? (
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    onClick={() => setEditMode(!editMode)}
-                  >
-                    Edit profile
-                  </Button>
-                ) : (
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    onClick={submitChanges}
-                  >
-                    Save profile
-                  </Button>
-                )}
-              </CardActions>
+              {currentUserIsOwner ? (
+                <CardActions>
+                  {!editMode ? (
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      onClick={() => setEditMode(!editMode)}
+                    >
+                      Edit profile
+                    </Button>
+                  ) : (
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      onClick={submitChanges}
+                    >
+                      Save profile
+                    </Button>
+                  )}
+                </CardActions>
+              ) : null}
             </Card>
           </Grid>
           <Grid item xs={11} sm={5} md={4}>
@@ -178,18 +180,20 @@ export default function UserProfile() {
                       return (
                         <ListItem key={index}>
                           <ListItemText primary={favouriteWord.favouriteWord} />
-                          <ListItemSecondaryAction>
-                            <IconButton
-                              edge="end"
-                              aria-label="delete"
-                              fontSize="small"
-                              onClick={() =>
-                                dispatch(updateFavWord(favouriteWord, false))
-                              }
-                            >
-                              <DeleteIcon />
-                            </IconButton>
-                          </ListItemSecondaryAction>
+                          {currentUserIsOwner ? (
+                            <ListItemSecondaryAction>
+                              <IconButton
+                                edge="end"
+                                aria-label="delete"
+                                fontSize="small"
+                                onClick={() =>
+                                  dispatch(updateFavWord(favouriteWord, false))
+                                }
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </ListItemSecondaryAction>
+                          ) : null}
                         </ListItem>
                       );
                     })}
@@ -231,16 +235,18 @@ export default function UserProfile() {
                   "No history, yet"
                 )}
               </CardContent>
-              <CardActions>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  onClick={() => dispatch(clearUserHistory(userId))}
-                >
-                  Clear history
-                </Button>
-              </CardActions>
+              {currentUserIsOwner ? (
+                <CardActions>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    onClick={() => dispatch(clearUserHistory(userId))}
+                  >
+                    Clear history
+                  </Button>
+                </CardActions>
+              ) : null}
             </Card>
           </Grid>
         </Grid>
