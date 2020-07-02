@@ -1,5 +1,8 @@
 import { USER_PROFILE_FETCHED } from "./actions";
-import { DELETE_FAVWORD_PROFILE } from "../results/actions";
+import {
+  DELETE_FAVWORD_PROFILE,
+  UPDATE_PROFILE_HISTORY,
+} from "../results/actions";
 
 const initialState = {
   searchHistories: [],
@@ -10,6 +13,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case USER_PROFILE_FETCHED:
       return action.payload;
+
     case DELETE_FAVWORD_PROFILE:
       return {
         ...state,
@@ -18,6 +22,12 @@ export default (state = initialState, action) => {
             (favouriteWord) => favouriteWord.favouriteWord !== action.payload
           ),
         ],
+      };
+
+    case UPDATE_PROFILE_HISTORY:
+      return {
+        ...state,
+        searchHistories: [],
       };
     default:
       return state;

@@ -29,7 +29,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { selectUserProfile } from "../../store/userProfile/selectors";
 import { fetchUserProfile } from "../../store/userProfile/actions";
 
-import { updateFavWord } from "../../store/results/actions";
+import { updateFavWord, clearUserHistory } from "../../store/results/actions";
 import { selectUser } from "../../store/user/selectors";
 
 const useStyles = makeStyles((theme) => ({
@@ -49,6 +49,7 @@ export default function UserProfile() {
   const { userId } = useParams();
   const userProfile = useSelector(selectUserProfile);
   const user = useSelector(selectUser);
+  const currentUserIsOwner = userProfile.id == user.id;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -60,7 +61,13 @@ export default function UserProfile() {
     dispatch(updateFavWord(favouriteWord, false));
   }
 
-  if (!userProfile.public && userProfile.id !== user.id) {
+  // function clearUserHistory(event) {
+  //   event.preventDefault();
+  //   console.log("clearuserhistory pressed for userId:", userId);
+  //   dispatch(clearUserHistory(userId));
+  // }
+
+  if (!userProfile.public && !currentUserIsOwner) {
     return (
       <Container maxWidth="md" component="main" className={classes.heroContent}>
         <Grid container spacing={5} alignItems="flex-start" justify="center">
@@ -149,7 +156,9 @@ export default function UserProfile() {
                       );
                     })}
                   </List>
-                ) : null}
+                ) : (
+                  "No favourite words, yet"
+                )}
               </CardContent>
             </Card>
           </Grid>
@@ -180,8 +189,20 @@ export default function UserProfile() {
                       </TableBody>
                     </Table>
                   </TableContainer>
-                ) : null}
+                ) : (
+                  "No history, yet"
+                )}
               </CardContent>
+              <CardActions>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  onClick={() => dispatch(clearUserHistory(userId))}
+                >
+                  Clear history
+                </Button>
+              </CardActions>
             </Card>
           </Grid>
         </Grid>
