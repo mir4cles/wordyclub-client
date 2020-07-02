@@ -11,6 +11,8 @@ import { selectUser } from "../user/selectors";
 
 export const FETCH_RESULTS_SUCCESS = "FETCH_RESULTS_SUCCESS";
 export const SET_KEYWORD = "SET_KEYWORD";
+export const DELETE_FAVWORD_PROFILE = "DELETE_FAVWORD_PROFILE";
+export const UPDATE_PROFILE_HISTORY = "UPDATE_PROFILE_HISTORY";
 
 const fetchResultsSuccess = (results, keyword) => ({
   type: FETCH_RESULTS_SUCCESS,
@@ -22,6 +24,15 @@ const setKeyword = (keyword) => ({
   type: SET_KEYWORD,
   payload: keyword,
 });
+
+
+const updateFavInProfile = (favouriteWord) => ({
+  type: DELETE_FAVWORD_PROFILE,
+  payload: favouriteWord,
+});
+
+const updateProfileHistory = () => ({
+  type: UPDATE_PROFILE_HISTORY,
 
 const resetResult = () => ({
   type: "RESET",
@@ -94,7 +105,12 @@ export const updateFavWord = (favouriteWord, status) => {
           }
         );
         dispatch(
-          showMessageWithTimeout("success", false, "Saved to favourites", 4000)
+          showMessageWithTimeout(
+            "success",
+            false,
+            `Saved "${favouriteWord}" to favourites`,
+            4000
+          )
         );
       } else {
         const response = await axios.delete(
@@ -108,19 +124,43 @@ export const updateFavWord = (favouriteWord, status) => {
             },
           }
         );
+        dispatch(updateFavInProfile(favouriteWord));
         dispatch(
           showMessageWithTimeout(
             "success",
             false,
-            "Removed from favourites",
+            `Removed "${favouriteWord}" from favourites`,
             4000
           )
         );
       }
-
       dispatch(appDoneLoading());
     } catch (error) {
       console.log(error);
+      dispatch(showMessageWithTimeout("warning", false, `${error}`));
+    }
+  };
+};
+
+export const clearUserHistory = (userId) => {
+  return async (dispatch, getState) => {
+    const { id, token } = selectUser(getState());
+    dispatch(appLoading());
+    try {
+      await axios.delete(
+        `${process.env.REACT_APP_API_URL}/searchhistory/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch(
+        showMessageWithTimeout("success", false, `Search history cleared`, 4000)
+      );
+      dispatch(appDoneLoading());
+      dispatch(updateProfileHistory());
+    } catch (error) {
       dispatch(showMessageWithTimeout("warning", false, `${error}`));
     }
   };
