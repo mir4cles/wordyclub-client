@@ -11,6 +11,7 @@ import UserProfile from "./pages/UserProfile";
 import NotFound from "./pages/NotFound";
 
 import { getUserWithStoredToken } from "./store/user/actions";
+import SearchResults from "./components/SearchResults";
 
 function App() {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ function App() {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
+        <Route path="/search/:keyword" component={SearchResults} />
         <Route path="/profile/:userId" component={UserProfile} />
         <Route path="/signup" component={SignUp} />
         <Route path="/" component={NotFound} />
