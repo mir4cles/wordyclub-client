@@ -27,6 +27,16 @@ export default function Home() {
       >
         Wordy Club
       </Typography>
+      <Typography
+        variant="h5"
+        align="center"
+        color="textSecondary"
+        component="p"
+      >
+        As the name suggest, Wordy club helps you in finding the definition of
+        words your looking for. It also helps you listen to the word you search
+        and their meaning.
+      </Typography>
       <SearchBar />
       <SearchResults />
     </Container>
