@@ -43,10 +43,15 @@ export const fetchResults = (searchInput) => {
       },
     })
       .then((response) => {
-        console.log(response.data);
+        console.log("Response", response.data);
         // dispatch(setKeyword(searchInput));
-        dispatch(fetchResultsSuccess(response.data.results, searchInput));
-        dispatch(appDoneLoading());
+        if (response.data.results) {
+          dispatch(fetchResultsSuccess(response.data.results, searchInput));
+          dispatch(appDoneLoading());
+        } else {
+          dispatch(showMessageWithTimeout("warning", false, "Word Not Found"));
+          dispatch(appDoneLoading());
+        }
       })
       .catch((error) => {
         console.log(error);
