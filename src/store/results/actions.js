@@ -25,7 +25,6 @@ const setKeyword = (keyword) => ({
   payload: keyword,
 });
 
-
 const updateFavInProfile = (favouriteWord) => ({
   type: DELETE_FAVWORD_PROFILE,
   payload: favouriteWord,
@@ -33,6 +32,7 @@ const updateFavInProfile = (favouriteWord) => ({
 
 const updateProfileHistory = () => ({
   type: UPDATE_PROFILE_HISTORY,
+});
 
 const resetResult = () => ({
   type: "RESET",

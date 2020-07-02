@@ -54,7 +54,7 @@ export default function UserProfile() {
   const { userId } = useParams();
   const userProfile = useSelector(selectUserProfile);
   const user = useSelector(selectUser);
-  const currentUserIsOwner = userProfile.id == user.id;
+  const currentUserIsOwner = userProfile.id === user.id;
 
   const [editMode, setEditMode] = useState(false);
   const [username, setUsername] = useState(userProfile.name);

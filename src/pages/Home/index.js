@@ -1,5 +1,6 @@
 import React from "react";
 
+import Wordcloud from "../../components/Wordcloud";
 import SearchBar from "../../components/SearchBar";
 import SearchResults from "../../components/SearchResults";
 
@@ -27,6 +28,7 @@ export default function Home() {
       >
         Wordy Club
       </Typography>
+      <Wordcloud />
       <Typography
         variant="h5"
         align="center"
