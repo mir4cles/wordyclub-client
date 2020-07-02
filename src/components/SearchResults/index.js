@@ -11,7 +11,11 @@ import WordCard from "../../components/WordCard";
 import { selectResults } from "../../store/results/selectors";
 import { selectToken, selectUser } from "../../store/user/selectors";
 
-const useStyles = makeStyles((theme) => ({}));
+const useStyles = makeStyles((theme) => ({
+  heroContent: {
+    padding: theme.spacing(4, 0, 6),
+  },
+}));
 
 export default function SearchResults() {
   const classes = useStyles();
