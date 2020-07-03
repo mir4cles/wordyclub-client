@@ -48,7 +48,7 @@ export const fetchResults = (searchInput) => {
 
     dispatch(appLoading());
     dispatch(resetResult());
-    await axios({
+    const response = await axios({
       method: "GET",
       url: `${wordsApiUrl}/${searchInput}`,
       headers: {
@@ -71,7 +71,13 @@ export const fetchResults = (searchInput) => {
       })
       .catch((error) => {
         console.log(error);
-        dispatch(showMessageWithTimeout("warning", false, `${error}`));
+        dispatch(
+          showMessageWithTimeout(
+            "warning",
+            false,
+            `${error.response.data.message}`
+          )
+        );
       });
 
     if (token !== null) {
@@ -95,7 +101,7 @@ export const updateFavWord = (favouriteWord, status) => {
       dispatch(appLoading());
 
       if (status) {
-        await axios.post(
+        const response = await axios.post(
           `${process.env.REACT_APP_API_URL}/favouritewords/`,
           { favouriteWord },
           {
@@ -113,14 +119,17 @@ export const updateFavWord = (favouriteWord, status) => {
           )
         );
       } else {
-        await axios.delete(`${process.env.REACT_APP_API_URL}/favouritewords/`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          data: {
-            favouriteWord,
-          },
-        });
+        const response = await axios.delete(
+          `${process.env.REACT_APP_API_URL}/favouritewords/`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            data: {
+              favouriteWord,
+            },
+          }
+        );
         dispatch(updateFavInProfile(favouriteWord));
         dispatch(
           showMessageWithTimeout(
@@ -133,8 +142,13 @@ export const updateFavWord = (favouriteWord, status) => {
       }
       dispatch(appDoneLoading());
     } catch (error) {
-      console.log(error);
-      dispatch(showMessageWithTimeout("warning", false, `${error}`));
+      dispatch(
+        showMessageWithTimeout(
+          "warning",
+          false,
+          `${error.response.data.message}`
+        )
+      );
     }
   };
 };
@@ -144,7 +158,7 @@ export const clearUserHistory = (userId) => {
     const { token } = selectUser(getState());
     dispatch(appLoading());
     try {
-      await axios.delete(
+      const response = await axios.delete(
         `${process.env.REACT_APP_API_URL}/searchhistory/${userId}`,
         {
           headers: {
@@ -158,7 +172,13 @@ export const clearUserHistory = (userId) => {
       dispatch(appDoneLoading());
       dispatch(updateProfileHistory());
     } catch (error) {
-      dispatch(showMessageWithTimeout("warning", false, `${error}`));
+      dispatch(
+        showMessageWithTimeout(
+          "warning",
+          false,
+          `${error.response.data.message}`
+        )
+      );
     }
   };
 };

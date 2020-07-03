@@ -22,7 +22,13 @@ export const fetchUserProfile = (id) => {
       const response = await axios.get(`${apiUrl}/profiles/${id}`);
       dispatch(userProfileFetched(response.data.userProfile));
     } catch (error) {
-      dispatch(showMessageWithTimeout("warning", false, `${error}`));
+      dispatch(
+        showMessageWithTimeout(
+          "warning",
+          false,
+          `${error.response.data.message}`
+        )
+      );
     }
     dispatch(appDoneLoading());
   };
@@ -32,22 +38,32 @@ export const updateProfile = (userId, name, email) => {
   return async (dispatch, getState) => {
     dispatch(appLoading());
     const { token } = selectUser(getState());
-    await axios.patch(
-      `${apiUrl}/profiles/${userId}`,
-      {
-        name,
-        email,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+    try {
+      const response = await axios.patch(
+        `${apiUrl}/profiles/${userId}`,
+        {
+          name,
+          email,
         },
-      }
-    );
-    dispatch(fetchUserProfile(userId));
-    dispatch(
-      showMessageWithTimeout("success", false, "Profile successfully updated")
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch(fetchUserProfile(userId));
+      dispatch(
+        showMessageWithTimeout("success", false, "Profile successfully updated")
+      );
+    } catch (error) {
+      dispatch(
+        showMessageWithTimeout(
+          "warning",
+          false,
+          `${error.response.data.message}`
+        )
+      );
+    }
     dispatch(appDoneLoading());
   };
 };

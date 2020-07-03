@@ -70,6 +70,50 @@ export default function UserProfile() {
     setEditMode(false);
   }
 
+  if (!userProfile.name) {
+    return (
+      <Container maxWidth="md" component="main" className={classes.heroContent}>
+        <Grid container spacing={5} alignItems="flex-start" justify="center">
+          <Grid item xs={12} sm={6} md={4}>
+            <Card>
+              <CardHeader
+                title="User information"
+                titleTypographyProps={{ align: "center" }}
+                subheaderTypographyProps={{ align: "center" }}
+                className={classes.cardHeader}
+              />
+              <CardContent>Profile Loading</CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Container>
+    );
+  } else {
+    if (!userProfile.public && !currentUserIsOwner) {
+      return (
+        <Container
+          maxWidth="md"
+          component="main"
+          className={classes.heroContent}
+        >
+          <Grid container spacing={5} alignItems="flex-start" justify="center">
+            <Grid item xs={12} sm={6} md={4}>
+              <Card>
+                <CardHeader
+                  title="User information"
+                  titleTypographyProps={{ align: "center" }}
+                  subheaderTypographyProps={{ align: "center" }}
+                  className={classes.cardHeader}
+                />
+                <CardContent>This profile is set to private.</CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </Container>
+      );
+    }
+  }
+
   if (!userProfile.public && !currentUserIsOwner) {
     return (
       <Container maxWidth="md" component="main" className={classes.heroContent}>
@@ -187,7 +231,12 @@ export default function UserProfile() {
                                 aria-label="delete"
                                 fontSize="small"
                                 onClick={() =>
-                                  dispatch(updateFavWord(favouriteWord, false))
+                                  dispatch(
+                                    updateFavWord(
+                                      favouriteWord.favouriteWord,
+                                      false
+                                    )
+                                  )
                                 }
                               >
                                 <DeleteIcon />
