@@ -14,6 +14,7 @@ import Container from "@material-ui/core/Container";
 
 import { signUp } from "../../store/user/actions";
 import { selectToken } from "../../store/user/selectors";
+import { Checkbox, FormControlLabel } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -40,6 +41,7 @@ export default function SignUp() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [publicProfile, setPublicProfile] = useState(true);
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
   const history = useHistory();
@@ -53,11 +55,16 @@ export default function SignUp() {
   function submitForm(event) {
     event.preventDefault();
 
-    dispatch(signUp(username, email, password));
+    dispatch(signUp(username, email, password, publicProfile));
 
     setEmail("");
     setPassword("");
     setUsername("");
+    setPublicProfile(true);
+  }
+
+  function SetPublicProfile() {
+    setPublicProfile(publicProfile === true ? false : true);
   }
 
   return (
@@ -111,6 +118,20 @@ export default function SignUp() {
                 autoComplete="current-password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    value={publicProfile}
+                    onChange={SetPublicProfile}
+                    defaultChecked
+                    name="publicProfile"
+                    color="primary"
+                  />
+                }
+                label="Public Profile"
               />
             </Grid>
           </Grid>

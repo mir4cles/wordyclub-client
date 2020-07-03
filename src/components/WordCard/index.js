@@ -62,7 +62,7 @@ export default function WordCard(props) {
                   onClick={(event) => console.log(event)}
                   speak={result.definition}
                 >
-                  Listen to Search Word
+                  Listen
                 </SayButton>
               </ListItem>
             );
